@@ -28,6 +28,19 @@ export const fetchIllegalParking = async (query) => {
             "id": "601",
             "timestamp": "2021-01-23T22:05:07.488+00:00",
             "location": {
+                "latitude": 44.4701,
+                "longitude": 26.1
+            },
+            "type": "ILLEGAL",
+            "description": "Un idiot a parcat pe interzis",
+            "base64EncodedPhoto": null,
+            "reputationScore": 0,
+            "tag": "Masini pe interzis"
+        },
+        {
+            "id": "602",
+            "timestamp": "2021-01-23T22:05:07.488+00:00",
+            "location": {
                 "latitude": 44.45,
                 "longitude": 26.2
             },
