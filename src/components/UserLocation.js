@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Popup, useMapEvents } from 'react-leaflet';
 import Marker from 'react-leaflet-enhanced-marker';
 
@@ -10,21 +10,33 @@ class IconComponent extends React.Component {
     }
 }
 
-const UserLocation = () => {
-    const [location, setLocation] = useState({lat: 45.00, lng: 26.00});
+const UserLocation = (props) => {
+    const [userLocation, setUserLocation] = useState({lat: 45.00, lng: 26.00});
+    const [firstLoad, setFirstLoad] = useState(true);
+    const { lockView, setLockView } = props
 
     const map = useMapEvents({
         locationfound: (location) => {
-            console.log("Location found: ", location);
-            setLocation(map.getCenter());
+            setUserLocation(location.latlng);
+            if (firstLoad) {
+                map.flyTo(location.latlng, 18);
+                setFirstLoad(false);
+            }
         },
     });
 
-    map.locate({setView: true, watch: true});
-    
+    map.locate({watch: true});
+
+    useEffect(() => {
+        if (lockView) {
+            map.flyTo(userLocation, 18);
+            setLockView(false);
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [lockView, setLockView])
     return (
         <Marker 
-            position={location} 
+            position={userLocation} 
             icon={<IconComponent/>}>
 
             <Popup>

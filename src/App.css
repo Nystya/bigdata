@@ -19,6 +19,18 @@ body {
   height: 100%;
 }
 
+.current-location-button {
+  position: absolute;
+  top: 80px;
+  left: 10px;
+  z-index: 100;
+  background-color: white;
+  border-radius: 50%;
+
+  cursor: pointer;
+  user-select: none;
+}
+
 .leaflet-container {
   width: 100%;
   height: calc(100% - 50px);

@@ -10,6 +10,7 @@ import Navbar from './components/Navbar';
 import "./App.css";
 
 import image_placeholder from './assets/placeholder.png';
+import current_location from './assets/current_location.png';
 
 
 Modal.setAppElement('#root');
@@ -18,6 +19,7 @@ const App = () => {
     let [userModal, setUserModal] = useState(false);
     let [illegalModal, setIllegalModal] = useState(false);
     let [freeModal, setFreeModal] = useState(false);
+    let [lockView, setLockView] = useState(false);
     
     const [illegalProofSource, setIllegalProofSource] = useState("");
     const handleIllegalProof = (target) => {
@@ -47,11 +49,18 @@ const App = () => {
 
     return (
         <div className="main-container">
+            <img
+                className="current-location-button"
+                src={current_location}
+                alt="center"
+                onClick={() => setLockView(true)}
+            ></img>
+
             <MapContainer center={[44.45, 26.1]} zoom={15}>
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                <UserLocation />
+                <UserLocation lockView={lockView} setLockView={setLockView}/>
                 <IllegalParkingReports />
                 <FreeParkingLots />
             </MapContainer>
