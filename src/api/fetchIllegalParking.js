@@ -2,18 +2,20 @@
 
 // const URL = '';
 
-export const fetchParkingLots = async (query) => {
+export const fetchIllegalParking = async (query) => {
     // const { data } = await axios.get(URL, {
     //     params: {
     //     }
     // });
+
+    // return data;
 
     return [
         {
             "id": "600",
             "timestamp": "2021-01-23T22:05:07.488+00:00",
             "location": {
-                "latitude": 44.44,
+                "latitude": 44.47,
                 "longitude": 26.1
             },
             "type": "ILLEGAL",
@@ -26,7 +28,7 @@ export const fetchParkingLots = async (query) => {
             "id": "601",
             "timestamp": "2021-01-23T22:05:07.488+00:00",
             "location": {
-                "latitude": 44.4401,
+                "latitude": 44.4701,
                 "longitude": 26.1
             },
             "type": "ILLEGAL",
@@ -39,7 +41,7 @@ export const fetchParkingLots = async (query) => {
             "id": "602",
             "timestamp": "2021-01-23T22:05:07.488+00:00",
             "location": {
-                "latitude": 44.48,
+                "latitude": 44.45,
                 "longitude": 26.2
             },
             "type": "ILLEGAL",
@@ -48,5 +50,5 @@ export const fetchParkingLots = async (query) => {
             "reputationScore": 0,
             "tag": "Masini pe interzis"
         }
-    ];
+    ]
 }

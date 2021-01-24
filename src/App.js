@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { MapContainer, TileLayer, MapConsumer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer } from 'react-leaflet'
 import Modal from 'react-modal';
 
-// import { fetchParkingLots } from './api/fetchParkingLots';
+import UserLocation from './components/UserLocation';
+import IllegalParkingReports from './components/IllegalParkingReports';
+import FreeParkingLots from './components/FreeParkingLots';
+
 import Navbar from './components/Navbar';
 import "./App.css";
 
@@ -11,20 +14,7 @@ import image_placeholder from './assets/placeholder.png';
 
 Modal.setAppElement('#root');
 
-const App = () => {
-    // const [query, setQuery] = useState('');
-    // const [parkingLots, setParkingLots] = useState({}); 
-
-    // const search = async (e) => {
-    //     if (e.key === 'Enter') {
-    //         const data = await fetchParkingLots(query);
-
-    //         setParkingLots(data);
-    //         setQuery('');
-    //     }
-    // }
-
-    
+const App = () => {    
     let [userModal, setUserModal] = useState(false);
     let [illegalModal, setIllegalModal] = useState(false);
     let [freeModal, setFreeModal] = useState(false);
@@ -61,17 +51,9 @@ const App = () => {
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                <MapConsumer>
-                    {(map) => {
-                        map.locate({setView: true});
-                        return null;
-                    }}
-                </MapConsumer>
-                <Marker position={[44.45, 26.1]}>
-                    <Popup>
-                        This is a nice popup
-                    </Popup>
-                </Marker>
+                <UserLocation />
+                <IllegalParkingReports />
+                <FreeParkingLots />
             </MapContainer>
             
             <Navbar
