@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapContainer, TileLayer, MapConsumer } from 'react-leaflet'
+import { MapContainer, TileLayer, MapConsumer, Marker, Popup } from 'react-leaflet'
 
 // import { fetchParkingLots } from './api/fetchParkingLots';
 
@@ -17,12 +17,17 @@ const App = () => {
     //         setQuery('');
     //     }
     // }
+    const reportIllegalParking = (event) => {
+        console.log("Button clicked");
+    }
 
     return (
-        <div className="leaflet-container">
+        <div className="main-container">
+            <div className="navbar">
+                <input accept="image/*" id="icon-button-file" type="file" capture="environment"/>
+            </div>
             <MapContainer center={[44.45, 26.1]} zoom={15}>
                 <TileLayer
-                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
                 <MapConsumer>
@@ -31,7 +36,16 @@ const App = () => {
                         return null;
                     }}
                 </MapConsumer>
+                <Marker position={[44.45, 26.1]}>
+                    <Popup>
+                        This is a nice popup
+                    </Popup>
+                </Marker>
             </MapContainer>
+            <div className="report-buttons">
+                <button onClick={reportIllegalParking}>Report Illegal Parking</button>
+                <button onClick={reportIllegalParking}>Report Free Parking</button>
+            </div>
         </div>
     );
 }

@@ -5,7 +5,7 @@
 }
 
 body {
-    width: 100vh;
+    width: 100vw;
     height: 100vh;
 }
 
@@ -14,9 +14,31 @@ body {
     height: 100%;
 }
 
+.main-container {
+    width: 100%;
+    height: 100%;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 50px;
+
+    z-index: 100;
+
+    background-color: aqua;
+}
+
 .leaflet-container {
     width: 100%;
     height: 100%;
+
+    margin-top: 50px;
+
+    z-index: 0;
 }
 
 .parking-lot-popup {
@@ -24,4 +46,22 @@ body {
     height: 150px;
 
     background-color: blanchedalmond;
+}
+
+.report-buttons {
+    position: fixed;
+    bottom: 0;
+    z-index: 100;
+
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+}
+
+.report-buttons button {
+    height: fit-content;
+    width: 100px;
+
+    margin: 10px;
 }
