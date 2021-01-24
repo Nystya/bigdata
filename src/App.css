@@ -1,52 +1,103 @@
 * {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 body {
-    width: 100vw;
-    height: 100vh;
+  width: 100vw;
+  height: 100vh;
 }
 
 #root {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 .main-container {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 .leaflet-container {
-    width: 100%;
-    height: calc(100% - 50px);
+  width: 100%;
+  height: calc(100% - 50px);
 
-    z-index: 0;
+  z-index: 0;
 }
 
 .parking-lot-popup {
-    width: 150px;
-    height: 150px;
+  width: 150px;
+  height: 150px;
 
-    background-color: blanchedalmond;
+  background-color: blanchedalmond;
 }
 
 .report-buttons {
-    position: fixed;
-    bottom: 0;
-    z-index: 100;
+  position: fixed;
+  bottom: 0;
+  z-index: 100;
 
-    width: 100%;
+  width: 100%;
 
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 .report-buttons button {
-    height: fit-content;
-    width: 100px;
+  height: fit-content;
+  width: 100px;
 
-    margin: 10px;
+  margin: 10px;
+}
+
+.modalDiv {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.modalTitle {
+  text-align: center;
+}
+
+.descriptionDiv {
+  margin: 20px 0px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.pictureDiv {
+  margin: 20px 0px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.pictureDiv img {
+  height: 100px;
+}
+
+.buttonDiv {
+  display: flex;
+  justify-content: center;
+}
+
+.closeButtonDiv {
+  margin-top: 50px;
+}
+
+button {
+  width: 300px;
+}
+
+textarea {
+  margin-top: 10px;
+  height: 100px;
+  width: 250px;
 }

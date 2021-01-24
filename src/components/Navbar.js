@@ -6,17 +6,21 @@ import freeParkingLogo from './assets/parking-lot-logo.png';
 import './styles/Navbar.css';
 
 
-const Navbar = () => {
+const Navbar = (props) => {
     const handleUserMenu = () => {
         console.log("Showing user menu modal");
+        props.user(true);
     }
 
     const handleIllegalMenu = () => {
         console.log("Showing illegal parking report modal");
+        props.illegal(true);
+        props.proof('');
     }
 
     const handleParkingMenu = () => {
         console.log("Showing free parking report modal");
+        props.free(true);
     }
     
     return (
