@@ -1,23 +1,22 @@
-import { map } from 'leaflet';
-import React, { useEffect, useRef, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents, useMap, MapConsumer } from 'react-leaflet'
+import React from 'react';
+import { MapContainer, TileLayer, MapConsumer } from 'react-leaflet'
 
-import { fetchParkingLots } from './api/fetchParkingLots';
+// import { fetchParkingLots } from './api/fetchParkingLots';
 
 import "./App.css";
 
 const App = () => {
-    const [query, setQuery] = useState('');
-    const [parkingLots, setParkingLots] = useState({}); 
+    // const [query, setQuery] = useState('');
+    // const [parkingLots, setParkingLots] = useState({}); 
 
-    const search = async (e) => {
-        if (e.key === 'Enter') {
-            const data = await fetchParkingLots(query);
+    // const search = async (e) => {
+    //     if (e.key === 'Enter') {
+    //         const data = await fetchParkingLots(query);
 
-            setParkingLots(data);
-            setQuery('');
-        }
-    }
+    //         setParkingLots(data);
+    //         setQuery('');
+    //     }
+    // }
 
     return (
         <div className="leaflet-container">
