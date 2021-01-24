@@ -1,7 +1,9 @@
-import React from 'react';
-import { MapContainer, TileLayer, MapConsumer, Marker, Popup } from 'react-leaflet'
+import React, { useState } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet'
 
 // import { fetchParkingLots } from './api/fetchParkingLots';
+// import { fetchIllegalParking} from './api/fetchIllegalParking';
+
 import Navbar from './components/Navbar';
 
 import "./App.css";
@@ -32,6 +34,27 @@ const App = () => {
     //         }
     //     }
     // }
+
+    const UserLocation = () => {
+        const [location, setLocation] = useState({lat: 45.00, lng: 26.00});
+
+        const map = useMapEvents({
+            locationfound: (location) => {
+                console.log("Location found: ", location);
+                setLocation(map.getCenter());
+            },
+        });
+
+        map.locate({setView: true, watch: true});
+        
+        return (
+            <Marker position={location}>
+                <Popup>
+                    This is a nice popup
+                </Popup>
+            </Marker>
+        )
+    }
     
     return (
         <div className="main-container">
@@ -39,20 +62,9 @@ const App = () => {
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                <MapConsumer>
-                    {(map) => {
-                        map.locate({setView: true});
-                        return null;
-                    }}
-                </MapConsumer>
-                <Marker position={[44.45, 26.1]}>
-                    <Popup>
-                        This is a nice popup
-                    </Popup>
-                </Marker>
+                <UserLocation />
             </MapContainer>
-            <Navbar />
-            
+            <Navbar />         
         </div>
     );
 }
