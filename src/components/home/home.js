@@ -1,4 +1,4 @@
-import firebase from 'firebase';
+import firebase from '../../api/firebase';
 
 import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet'

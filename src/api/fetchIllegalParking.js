@@ -1,6 +1,7 @@
 // import axios from 'axios';
+// import baseURL from '../config/config';
 
-// const URL = '';
+// const URL = baseURL;
 
 export const fetchIllegalParking = async (query) => {
     // const { data } = await axios.get(URL, {
