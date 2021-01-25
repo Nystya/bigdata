@@ -13,11 +13,12 @@ class IconComponent extends React.Component {
 const UserLocation = (props) => {
     const [userLocation, setUserLocation] = useState({lat: 45.00, lng: 26.00});
     const [firstLoad, setFirstLoad] = useState(true);
-    const { lockView, setLockView } = props
+    const { lockView, setLockView, updateLocation } = props
 
     const map = useMapEvents({
         locationfound: (location) => {
             setUserLocation(location.latlng);
+            updateLocation(location.latlng);
             if (firstLoad) {
                 map.flyTo(location.latlng, 18);
                 setFirstLoad(false);
