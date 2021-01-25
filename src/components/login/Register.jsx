@@ -40,15 +40,15 @@ export class Register extends React.Component {
                 <div className="form">
                     <div className="form-group">
                         <label htmlFor="firstname">First name</label>
-                        <input type="text" name="firstName" placeholder="Ceres" value={this.state.firstName} onChange={this.handleChange}/>
+                        <input type="text" name="firstName" placeholder="Name" value={this.state.firstName} onChange={this.handleChange}/>
                     </div>
                     <div className="form-group">
                         <label htmlFor="lastname">Last name</label>
-                        <input type="text" name="lastName" placeholder="Team" value={this.state.lastName} onChange={this.handleChange}/>
+                        <input type="text" name="lastName" placeholder="Surname" value={this.state.lastName} onChange={this.handleChange}/>
                     </div>
                     <div className="form-group">
                         <label htmlFor="email">Email address</label>
-                        <input type="email" name="email" placeholder="ceres.team15@gmail.com" value={this.state.email} onChange={this.handleChange}/>
+                        <input type="email" name="email" placeholder="name.surname@gmail.com" value={this.state.email} onChange={this.handleChange}/>
                     </div>
                     <div className="form-group">
                         <label htmlFor="password">Password</label>

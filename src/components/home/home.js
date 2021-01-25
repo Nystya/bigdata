@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet'
 import Modal from 'react-modal';
 import { Redirect } from "react-router";
+import axios from 'axios';
 
 import UserLocation from '../UserLocation';
 import IllegalParkingReports from '../IllegalParkingReports';
@@ -14,9 +15,10 @@ import "./home.css";
 
 import image_placeholder from './assets/placeholder.png';
 import current_location from './assets/current_location.png';
-import axios from 'axios';
 
 import baseURL from '../../config/config';
+const illegalParkingURL = baseURL + "/api/illegalparkingevent";
+const freeParkingURL = baseURL + "/api/parkinglots";
 
 const deviceTokenURL = baseURL + "/api/devicetoken"
 
@@ -50,9 +52,37 @@ const Home = () => {
         }
     }
 
-    // Hack to remove not used warning - remove later
-    // console.log(parentUserLocation);
+    // report message to backend
+    const handleSubmitReport = (type) => {
+        let payload;
+        let endpoint;
         
+        if (type === 'illegal') {
+            endpoint = illegalParkingURL;
+            payload = {
+                'timestamp': Date.now(),
+                'location': parentUserLocation,
+                'type': type,
+                'description': document.getElementById("illegal-description").value,
+                'base64EncodedPhoto': '',
+                'tag': ''
+            }
+            setIllegalModal(false);
+        } else {
+            endpoint = freeParkingURL;
+            payload = {
+                'timestamp': Date.now(),
+                'location': parentUserLocation,
+                'isFree': type,
+            }
+            setFreeModal(false);
+        }
+
+        axios.post(endpoint, payload);
+        
+
+    }
+    
     // Enable push notifications
     useEffect(() => {
         const messaging = firebase.messaging();
@@ -79,6 +109,7 @@ const Home = () => {
             });   
         }
     })
+
 
     const modalStyle = {
         overlay: {
@@ -134,29 +165,29 @@ const Home = () => {
 
             {/* USER MODAL */}
             <Modal isOpen={userModal} onRequestClose={() => setUserModal(false)} style={modalStyle}>
-                <div className="modalDiv">
-                    <h2 className="modalTitle">Welcome user!</h2>
-                    <div className="buttonDiv">
+                <div className="modal-div">
+                    <h2 className="modal-title">Welcome user!</h2>
+                    <div className="button-div">
                         <button onClick={() => setIsLoggingOut(true)}>Logout</button>
                     </div>
                 </div>
                 
-                <div className="buttonDiv closeButtonDiv">
+                <div className="button-div close-button-div">
                     <button onClick={() => setUserModal(false)}>Close</button>
                 </div>
             </Modal>
 
             {/* ILLEGAL PARKING MODAL */}
             <Modal isOpen={illegalModal} onRequestClose={() => setIllegalModal(false)} style={modalStyle}>
-                <div className="modalDiv">
-                    <h2 className="modalTitle">Report illegal parking at current location</h2>
+                <div className="modal-div">
+                    <h2 className="modal-title">Report illegal parking at current location</h2>
                                     
-                    <div className="descriptionDiv">
+                    <div className="description-div">
                         <p>Description</p>
-                        <textarea></textarea>
+                        <textarea id="illegal-description"></textarea>
                     </div>                
 
-                    <div className="pictureDiv">
+                    <div className="picture-div">
                         <p>Take a picture</p>
                         {illegalProofSource ? 
                             <img src={illegalProofSource} alt="snap"></img>
@@ -171,33 +202,41 @@ const Home = () => {
                         />
                     </div>
 
-                    <div className="buttonDiv">
-                        <button>Send report</button>
+                    <div className="button-div">
+                        <button
+                            onClick={ () => {
+                                handleSubmitReport('illegal')
+                            }}
+                        >Send report</button>
                     </div>
                 </div>
 
-                <div className="buttonDiv closeButtonDiv">
+                <div className="button-div close-button-div">
                     <button onClick={() => setIllegalModal(false)}>Close</button>
                 </div>
             </Modal>
 
             {/* FREE PARKING MODAL */}
             <Modal isOpen={freeModal} onRequestClose={() => setFreeModal(false)} style={modalStyle}>
-                <div className="modalDiv">
-                    <h2 className="modalTitle">Report free parking spot at current location</h2>
+                <div className="modal-div">
+                    <h2 className="modal-title">Report free parking spot at current location</h2>
                     
-                    <div className="descriptionDiv">
+                    <div className="description-div">
                         <p>Description</p>
-                        <textarea></textarea>
+                        <textarea id="free-description"></textarea>
                     </div>                
 
 
-                    <div className="buttonDiv">
-                        <button>Send report</button>
+                    <div className="button-div">
+                        <button
+                            onClick={ () => {
+                                handleSubmitReport('free');
+                            }}
+                        >Send report</button>
                     </div>
                 </div>
 
-                <div className="buttonDiv closeButtonDiv">
+                <div className="button-div close-button-div">
                     <button onClick={() => setFreeModal(false)}>Close</button>
                 </div>
             </Modal>
