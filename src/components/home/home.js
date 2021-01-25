@@ -50,20 +50,16 @@ const Home = () => {
         }
     }
 
-    // Hack to remove not used warning - remove later
-    console.log(parentUserLocation);
-        
     // report message to backend
     const handleSubmitReport = (type) => {
-        const timpestamp = Date.now();
-        
         let payload;
         let endpoint;
+        
         if (type === 'illegal') {
             endpoint = illegalParkingURL;
             payload = {
                 'timestamp': Date.now(),
-                'location': currentLocation,
+                'location': parentUserLocation,
                 'type': type,
                 'description': document.getElementById("illegal-description").value,
                 'base64EncodedPhoto': '',
@@ -74,7 +70,7 @@ const Home = () => {
             endpoint = freeParkingURL;
             payload = {
                 'timestamp': Date.now(),
-                'location': currentLocation,
+                'location': parentUserLocation,
                 'isFree': type,
             }
             setFreeModal(false);
@@ -223,7 +219,6 @@ const Home = () => {
                     <div className="button-div">
                         <button
                             onClick={ () => {
-                                setDescription( document.getElementById("free-description").value );
                                 handleSubmitReport('free');
                             }}
                         >Send report</button>
