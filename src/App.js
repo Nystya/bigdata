@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import firebase from './api/firebase';
+
+import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet'
 import Modal from 'react-modal';
 
@@ -11,10 +13,9 @@ import "./App.css";
 
 import image_placeholder from './assets/placeholder.png';
 
-
 Modal.setAppElement('#root');
 
-const App = () => {    
+const App = () => {
     let [userModal, setUserModal] = useState(false);
     let [illegalModal, setIllegalModal] = useState(false);
     let [freeModal, setFreeModal] = useState(false);
@@ -29,6 +30,22 @@ const App = () => {
             }
         }
     }
+
+    useEffect(() => {
+        const messaging = firebase.messaging();
+        messaging.requestPermission().then(() => {
+            return messaging.getToken();
+        })
+        .then((token) => {
+            // Send token to server
+            console.log("Token: ", token)
+        })
+        .catch((err) => console.log("Error: ", err))
+
+        messaging.onMessage((payload) => {
+            console.log('Message received. ', payload);
+        });
+    })
 
     const modalStyle = {
         overlay: {

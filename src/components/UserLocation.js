@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Popup, useMapEvents } from 'react-leaflet';
 import Marker from 'react-leaflet-enhanced-marker';
 
+import './styles/UserLocation.css';
+
 import userLocationMarker from './assets/user-location-marker.png';
 
 class IconComponent extends React.Component {
@@ -16,7 +18,7 @@ const UserLocation = () => {
     const map = useMapEvents({
         locationfound: (location) => {
             console.log("Location found: ", location);
-            setLocation(map.getCenter());
+            setLocation(location.latlng);
         },
     });
 

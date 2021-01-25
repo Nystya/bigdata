@@ -1,8 +1,19 @@
 import React  from 'react';
-import { Marker, Popup } from 'react-leaflet';
+import { Popup } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
+import Marker from 'react-leaflet-enhanced-marker';
 
 import { fetchParkingLots } from '../api/fetchParkingLots';
+
+import './styles/FreeParkingLots.css';
+
+import parkingLotMarker from './assets/parking-lot-marker.png';
+
+class IconComponent extends React.Component {
+    render() {
+        return <img width="30px" height="30px" src={parkingLotMarker} alt="User Location"/>
+    }
+}
 
 class FreeParkingLots extends React.Component {
     state = {
@@ -34,9 +45,9 @@ class FreeParkingLots extends React.Component {
                     const lng = report.location.longitude;
 
                     return (
-                        <Marker key={report.id} position={{lat, lng}}>
+                        <Marker key={report.id} icon={<IconComponent/>} position={{lat, lng}}>
                             <Popup>
-                                <div>
+                                <div className="popup-container">
                                     <button onClick={(event) => this.handleTakeSpot(event, report.id)}>Take spot</button>
                                 </div>
                             </Popup>
