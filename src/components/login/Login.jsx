@@ -55,7 +55,7 @@ export class Login extends React.Component {
                 <div className="form">
                     <div className="form-group">
                         <label htmlFor="email">Email address</label>
-                        <input type="email" name="email" placeholder="ceres.team15@gmail.com" value={this.state.email} onChange={this.handleChange}/>
+                        <input type="email" name="email" placeholder="name.surname@gmail.com" value={this.state.email} onChange={this.handleChange}/>
                     </div>
                     <div className="form-group">
                         <label htmlFor="password">Password</label>
