@@ -17,9 +17,9 @@ class IllegalParkingReports extends React.Component  {
     state = {
         illegalParkingReports: []
     }
-    
+
     componentDidMount = () => {
-        fetchIllegalParking()
+        fetchIllegalParking(localStorage.getItem("Auth"), this.props)
         .then((reports) => this.setState({illegalParkingReports: reports}))
         .catch((err) => console.log(err));
     

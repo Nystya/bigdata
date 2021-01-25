@@ -1,52 +1,15 @@
-// import axios from 'axios';
+import axios from 'axios';
+import baseURL from '../config/config';
 
-// const URL = '';
+const parkingLotsURL = baseURL + "/api/parkinglots/distance";
 
-export const fetchParkingLots = async (query) => {
-    // const { data } = await axios.get(URL, {
-    //     params: {
-    //     }
-    // });
-
-    return [
-        {
-            "id": "600",
-            "timestamp": "2021-01-23T22:05:07.488+00:00",
-            "location": {
-                "latitude": 44.44,
-                "longitude": 26.1
-            },
-            "type": "ILLEGAL",
-            "description": "Un idiot a parcat pe interzis",
-            "base64EncodedPhoto": null,
-            "reputationScore": 0,
-            "tag": "Masini pe interzis"
+export const fetchParkingLots = async (token, query) => {
+    const { data } = await axios.get(parkingLotsURL, {
+        headers: {
+            'Authorization': 'Bearer ' + token
         },
-        {
-            "id": "601",
-            "timestamp": "2021-01-23T22:05:07.488+00:00",
-            "location": {
-                "latitude": 44.4401,
-                "longitude": 26.1
-            },
-            "type": "ILLEGAL",
-            "description": "Un idiot a parcat pe interzis",
-            "base64EncodedPhoto": null,
-            "reputationScore": 0,
-            "tag": "Masini pe interzis"
-        },
-        {
-            "id": "602",
-            "timestamp": "2021-01-23T22:05:07.488+00:00",
-            "location": {
-                "latitude": 44.48,
-                "longitude": 26.2
-            },
-            "type": "ILLEGAL",
-            "description": "Un idiot a parcat pe interzis",
-            "base64EncodedPhoto": null,
-            "reputationScore": 0,
-            "tag": "Masini pe interzis"
-        }
-    ];
+        params: query,
+    });
+
+    return data;
 }

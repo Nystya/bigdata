@@ -14,7 +14,11 @@ import "./home.css";
 
 import image_placeholder from './assets/placeholder.png';
 import current_location from './assets/current_location.png';
+import axios from 'axios';
 
+import baseURL from '../../config/config';
+
+const deviceTokenURL = baseURL + "/api/devicetoken"
 
 Modal.setAppElement('#root');
 
@@ -26,6 +30,7 @@ const Home = () => {
     const [freeModal, setFreeModal] = useState(false);
 
     // center on user's current position
+    const [parentUserLocation, setParentUserLocation] = useState({});
     const [lockView, setLockView] = useState(false);
 
     // wether the user is logging out
@@ -42,6 +47,9 @@ const Home = () => {
             }
         }
     }
+
+    // Hack to remove not used warning - remove later
+    console.log(parentUserLocation);
         
     // Enable push notifications
     useEffect(() => {
@@ -50,8 +58,13 @@ const Home = () => {
             return messaging.getToken();
         })
         .then((token) => {
-            // Send token to server
-            console.log("Token: ", token)
+            axios.put(deviceTokenURL, {deviceToken: token}, {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('Auth')
+                }
+            })
+            .then((res) => console.log("Success"))
+            .catch((err) => console.log("Error sending token: ", err));
         })
         .catch((err) => console.log("Error: ", err))
 
@@ -88,8 +101,16 @@ const Home = () => {
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                <UserLocation lockView={lockView} setLockView={setLockView}/>
-                <IllegalParkingReports />
+                <UserLocation 
+                    lockView={lockView}
+                    setLockView={setLockView}
+                    setParentUserLocation={setParentUserLocation}
+                />
+                <IllegalParkingReports
+                    latitude={44.45}
+                    longitude={26.1}
+                    radius={100}
+                ></IllegalParkingReports>
                 <FreeParkingLots />
             </MapContainer>
             

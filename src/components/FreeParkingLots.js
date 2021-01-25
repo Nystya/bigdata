@@ -21,7 +21,7 @@ class FreeParkingLots extends React.Component {
     }
 
     componentDidMount = () => {
-        fetchParkingLots()
+        fetchParkingLots(localStorage.getItem("Auth"), this.props)
         .then((reports) => this.setState({freeParkingLots: reports}))
         .catch((err) => console.log(err));
 

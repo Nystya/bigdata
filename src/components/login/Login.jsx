@@ -19,7 +19,7 @@ export class Login extends React.Component {
     state = {
         email: '',
         password: ''
-      }
+    }
     
     handleChange = event => {
         this.setState({ [event.target.name]: event.target.value });
