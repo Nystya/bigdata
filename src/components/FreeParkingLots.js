@@ -8,6 +8,11 @@ import { fetchParkingLots } from '../api/fetchParkingLots';
 import './styles/FreeParkingLots.css';
 
 import parkingLotMarker from './assets/parking-lot-marker.png';
+import baseURL from '../config/config';
+
+import axios from 'axios';
+
+const takeSpotURL = baseURL + "/api/parkinglots/";
 
 class IconComponent extends React.Component {
     render() {
@@ -22,10 +27,13 @@ class FreeParkingLots extends React.Component {
 
     componentDidMount = () => {
         fetchParkingLots(localStorage.getItem("Auth"), this.props)
-        .then((reports) => this.setState({freeParkingLots: reports}))
+        .then((reports) => {
+            if (reports) {
+                this.setState({freeParkingLots: reports});
+            }
+            console.log(reports);
+        })
         .catch((err) => console.log(err));
-
-        console.log(this.state.freeParkingLots);
     }    
     
     
@@ -35,6 +43,21 @@ class FreeParkingLots extends React.Component {
 
     handleTakeSpot = (event, id) => {
         console.log("Taking spot: ", id);
+
+        axios.patch(takeSpotURL + id, {isFree: "No"}, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('Auth')
+            }
+        })
+        .then((res) => {
+            this.setState((prevState) => {
+                const reportIdx = prevState.freeParkingLots.findIndex((obj) => obj._id === id);
+                prevState.freeParkingLots[reportIdx].isFree = "No";
+
+                return {...prevState}
+            })
+        })
+        .catch((err) => console.log(err));
     }
 
     render() {
@@ -45,13 +68,16 @@ class FreeParkingLots extends React.Component {
                     const lng = report.location.longitude;
 
                     return (
-                        <Marker key={report.id} icon={<IconComponent/>} position={{lat, lng}}>
+                        report.isFree === "Yes" ?
+                        <Marker key={report._id} icon={<IconComponent/>} position={{lat, lng}}>
                             <Popup>
                                 <div className="popup-container">
-                                    <button onClick={(event) => this.handleTakeSpot(event, report.id)}>Take spot</button>
+                                    <button onClick={(event) => this.handleTakeSpot(event, report._id)}>Take spot</button>
                                 </div>
                             </Popup>
                         </Marker>
+                        :
+                        null
                     )
                 })}
             </MarkerClusterGroup>

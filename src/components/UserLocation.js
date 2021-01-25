@@ -20,26 +20,31 @@ class IconComponent extends React.Component {
 const UserLocation = (props) => {
     const [userLocation, setUserLocation] = useState({lat: 45.00, lng: 26.00});
     const [firstLoad, setFirstLoad] = useState(true);
+    const [mayUpdate, setMayUpdate] = useState(true);
     const { lockView, setLockView, setParentUserLocation } = props
 
     const map = useMapEvents({
         locationfound: (location) => {
             setUserLocation(location.latlng);
-            setParentUserLocation(location.latlng);
 
-            axios.put(userLocationURL, 
-                {
-                    latitude: location.latlng.lat,
-                    longitude: location.latlng.lng
-                },
-                {
-                    headers: {
-                        'Authorization': 'Bearer ' + localStorage.getItem('Auth')
+            if (mayUpdate) {
+                setParentUserLocation(location.latlng);
+                axios.put(userLocationURL, 
+                    {
+                        latitude: location.latlng.lat,
+                        longitude: location.latlng.lng
+                    },
+                    {
+                        headers: {
+                            'Authorization': 'Bearer ' + localStorage.getItem('Auth')
+                        }
                     }
-                }
-            )
-            .then((res) => console.log('Success: ', res))
-            .catch((err) => console.log('Error: ', err));
+                )
+                .then((res) => {
+                    setMayUpdate(false);
+                })
+                .catch((err) => console.log('Error: ', err));
+            } 
             
             if (firstLoad) {
                 map.flyTo(location.latlng, 18);
@@ -47,8 +52,16 @@ const UserLocation = (props) => {
             }
         },
     });
-
+    
     map.locate({watch: true});
+    useEffect(() => {
+        const mayUpdateResetInterval = setTimeout(() => {
+            setMayUpdate(true);
+            
+        }, 2000);
+
+        return () => clearInterval(mayUpdateResetInterval);
+    })
 
     useEffect(() => {
         if (lockView) {

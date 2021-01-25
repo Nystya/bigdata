@@ -1,0 +1,31 @@
+
+.popup-container {
+    width: fit-content;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup-container button {
+    width: fit-content;
+}
+
+.popup-container img:nth-child(1) {
+    width: 30px;
+}
+
+.popup-container img:nth-child(2) {
+    width: 30px;
+    height: 30px;
+}
+
+.popup-container .like-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding-left: 2px;
+    padding-right: 2px;
+}

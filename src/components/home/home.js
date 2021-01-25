@@ -23,6 +23,8 @@ const deviceTokenURL = baseURL + "/api/devicetoken"
 Modal.setAppElement('#root');
 
 const Home = () => {
+    // firebase messaging
+    const [currentMessaging, setCurrentMessaging] = useState(null); 
 
     // show modals
     const [userModal, setUserModal] = useState(false);
@@ -49,28 +51,33 @@ const Home = () => {
     }
 
     // Hack to remove not used warning - remove later
-    console.log(parentUserLocation);
+    // console.log(parentUserLocation);
         
     // Enable push notifications
     useEffect(() => {
         const messaging = firebase.messaging();
-        messaging.requestPermission().then(() => {
-            return messaging.getToken();
-        })
-        .then((token) => {
-            axios.put(deviceTokenURL, {deviceToken: token}, {
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('Auth')
-                }
-            })
-            .then((res) => console.log("Success"))
-            .catch((err) => console.log("Error sending token: ", err));
-        })
-        .catch((err) => console.log("Error: ", err))
 
-        messaging.onMessage((payload) => {
-            console.log('Message received. ', payload);
-        });
+        if (!currentMessaging || currentMessaging !== messaging) {
+            setCurrentMessaging(messaging);
+            messaging.requestPermission().then(() => {
+                return messaging.getToken();
+            })
+            .then((token) => {
+
+                axios.put(deviceTokenURL, {deviceToken: token}, {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('Auth')
+                    }
+                })
+                .then((res) => localStorage.setItem('DeviceToken', res))
+                .catch((err) => console.log("Error sending token: ", err));
+            })
+            .catch((err) => console.log("Error: ", err))
+
+            messaging.onMessage((payload) => {
+                console.log('Message received. ', payload);
+            });   
+        }
     })
 
     const modalStyle = {
@@ -111,7 +118,11 @@ const Home = () => {
                     longitude={26.1}
                     radius={100}
                 ></IllegalParkingReports>
-                <FreeParkingLots />
+                <FreeParkingLots 
+                    latitude={44.45}
+                    longitude={26.1}
+                    radius={100}
+                ></FreeParkingLots>
             </MapContainer>
             
             <Navbar
