@@ -22,12 +22,6 @@ const Home = () => {
     const [userModal, setUserModal] = useState(false);
     const [illegalModal, setIllegalModal] = useState(false);
     const [freeModal, setFreeModal] = useState(false);
-    
-    // message to backend
-    const [currentLocation, setCurrentLocation] = useState(null);
-    const [currentLocation, setCurrentLocation] = useState(null);
-    const [currentLocation, setCurrentLocation] = useState(null);
-    const [currentLocation, setCurrentLocation] = useState(null);
 
     // center on user's current position
     const [lockView, setLockView] = useState(false);
@@ -35,6 +29,7 @@ const Home = () => {
     // wether the user is logging out
     const [isLoggingOut, setIsLoggingOut] = useState(false);
     
+    // set image proof src
     const [illegalProofSource, setIllegalProofSource] = useState("");
     const handleIllegalProof = (target) => {
         if (target.files) {
@@ -45,6 +40,17 @@ const Home = () => {
             }
         }
     }
+        
+    // // message to backend
+    // const [currentLocation, setCurrentLocation] = useState(null);
+    // const [timestamp, setTimestamp] = useState(null);
+    // const [type, setType] = useState('');
+    // const [description, setDescription] = useState('');
+    // const [photo, setPhoto] = useState('');
+    // const handleSubmitReport = () => {
+    //     setTimestamp(Date.now())
+    //     setCurrentLocation(UserLocation.)
+    // }
 
     const modalStyle = {
         overlay: {
