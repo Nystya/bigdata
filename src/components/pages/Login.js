@@ -2,6 +2,8 @@ import React from "react";
 import { Login } from "../login/index";
 import { Register } from "../login/index";
 
+import './Login.css';
+
 class LoginPage extends React.Component {
 
     constructor(props) {

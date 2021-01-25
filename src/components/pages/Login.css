@@ -1,0 +1,10 @@
+.login {
+    display: block !important;
+}
+
+.right-side {
+    align-items: center !important;
+    position: relative !important;
+    right: 0 !important;
+    height: 10% !important;
+}
