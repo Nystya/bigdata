@@ -1,6 +1,4 @@
-import firebase from '../../api/firebase';
-
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet'
 import Modal from 'react-modal';
 import { Redirect } from "react-router";
@@ -16,11 +14,6 @@ import "./home.css";
 import image_placeholder from './assets/placeholder.png';
 import current_location from './assets/current_location.png';
 
-import baseURL from '../../config/config';
-const illegalParkingURL = baseURL + "/api/illegalparkingevent";
-const freeParkingURL = baseURL + "/api/parkinglots";
-
-const deviceTokenURL = baseURL + "/api/devicetoken"
 
 Modal.setAppElement('#root');
 
@@ -32,7 +25,6 @@ const Home = () => {
     const [freeModal, setFreeModal] = useState(false);
 
     // center on user's current position
-    const [parentUserLocation, setParentUserLocation] = useState({});
     const [lockView, setLockView] = useState(false);
 
     // wether the user is logging out
@@ -49,64 +41,44 @@ const Home = () => {
             }
         }
     }
-
-    // Hack to remove not used warning - remove later
-    console.log(parentUserLocation);
         
-    // report message to backend
-    const handleSubmitReport = (type) => {
+    // message to backend
+    const [currentLocation, setCurrentLocation] = useState(null);
+    const [timestamp, setTimestamp] = useState(null);
+    const [type, setType] = useState('');
+    const [description, setDescription] = useState('');
+    const [photo, setPhoto] = useState('');
+    const handleSubmitReport = (recivedType) => {
         const timpestamp = Date.now();
         
-        let payload;
-        let endpoint;
-        if (type === 'illegal') {
-            endpoint = illegalParkingURL;
-            payload = {
-                'timestamp': Date.now(),
-                'location': currentLocation,
-                'type': type,
-                'description': document.getElementById("illegal-description").value,
-                'base64EncodedPhoto': '',
-                'tag': ''
-            }
-            setIllegalModal(false);
+        let description;
+        if (recivedType === 'illegal') {
+            description = document.getElementById("illegal-description").value
         } else {
-            endpoint = freeParkingURL;
-            payload = {
-                'timestamp': Date.now(),
-                'location': currentLocation,
-                'isFree': type,
-            }
-            setFreeModal(false);
+            descriprion = document.getElementById("free-description").value
         }
 
-        axios.post(endpoint, payload);
+        const payload = {
+            'timestamp': Date.now().,
+            'location': currentLocation,
+            'type': recivedType,
+            'description': description,
+            'base64EncodedPhoto': '',
+            'tag': ''
+        }
+
+        axios.post('http://localhost:9090/register', user)
+        .then(res => {
+            console.log(res.data);
+        })
         
-
+        console.log('currentLocation', currentLocation)
+        console.log('timestamp', Date.now())
+        console.log('type', recivedType)
+        console.log('description', description)
+        console.log('illegalProofSource', illegalProofSource)
+        console.log('photo', photo)
     }
-    
-    // Enable push notifications
-    useEffect(() => {
-        const messaging = firebase.messaging();
-        messaging.requestPermission().then(() => {
-            return messaging.getToken();
-        })
-        .then((token) => {
-            axios.put(deviceTokenURL, {deviceToken: token}, {
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('Auth')
-                }
-            })
-            .then((res) => console.log("Success"))
-            .catch((err) => console.log("Error sending token: ", err));
-        })
-        .catch((err) => console.log("Error: ", err))
-
-        messaging.onMessage((payload) => {
-            console.log('Message received. ', payload);
-        });
-    })
-
 
     const modalStyle = {
         overlay: {
@@ -136,16 +108,8 @@ const Home = () => {
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                <UserLocation 
-                    lockView={lockView}
-                    setLockView={setLockView}
-                    setParentUserLocation={setParentUserLocation}
-                />
-                <IllegalParkingReports
-                    latitude={44.45}
-                    longitude={26.1}
-                    radius={100}
-                ></IllegalParkingReports>
+                <UserLocation lockView={lockView} setLockView={setLockView} updateLocation={setCurrentLocation}/>
+                <IllegalParkingReports />
                 <FreeParkingLots />
             </MapContainer>
             

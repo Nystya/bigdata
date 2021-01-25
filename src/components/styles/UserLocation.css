@@ -1,0 +1,4 @@
+.leaflet-marker-icon.dummy.leaflet-zoom-animated.leaflet-interactive div {
+    display: flex;
+    justify-content: center;
+}

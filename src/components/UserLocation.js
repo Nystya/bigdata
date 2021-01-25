@@ -2,7 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Popup, useMapEvents } from 'react-leaflet';
 import Marker from 'react-leaflet-enhanced-marker';
 
+import './styles/UserLocation.css';
+
 import userLocationMarker from './assets/user-location-marker.png';
+
+import baseURL from '../config/config';
+import axios from 'axios';
+
+const userLocationURL = baseURL + "/api/userlocation";
 
 class IconComponent extends React.Component {
     render() {
@@ -13,12 +20,27 @@ class IconComponent extends React.Component {
 const UserLocation = (props) => {
     const [userLocation, setUserLocation] = useState({lat: 45.00, lng: 26.00});
     const [firstLoad, setFirstLoad] = useState(true);
-    const { lockView, setLockView, updateLocation } = props
+    const { lockView, setLockView, setParentUserLocation } = props
 
     const map = useMapEvents({
         locationfound: (location) => {
             setUserLocation(location.latlng);
-            updateLocation(location.latlng);
+            setParentUserLocation(location.latlng);
+
+            axios.put(userLocationURL, 
+                {
+                    latitude: location.latlng.lat,
+                    longitude: location.latlng.lng
+                },
+                {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('Auth')
+                    }
+                }
+            )
+            .then((res) => console.log('Success: ', res))
+            .catch((err) => console.log('Error: ', err));
+            
             if (firstLoad) {
                 map.flyTo(location.latlng, 18);
                 setFirstLoad(false);

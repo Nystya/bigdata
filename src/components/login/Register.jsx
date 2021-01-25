@@ -1,6 +1,10 @@
 import React from "react";
 import axios from 'axios';
 
+import baseURL from '../../config/config';
+
+const registerURL = baseURL + "/register";
+
 export class Register extends React.Component {
 
     state = {
@@ -24,7 +28,7 @@ export class Register extends React.Component {
             "lastName": this.state.lastName
         };
 
-        axios.post('http://localhost:9090/register', user)
+        axios.post(registerURL, user)
         .then(res => {
             console.log(res.data);
         })

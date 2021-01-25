@@ -1,16 +1,25 @@
 import React from 'react';
-import { Marker } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
+import Marker from 'react-leaflet-enhanced-marker';
 
 import { fetchIllegalParking} from '../api/fetchIllegalParking';
+
+import illegalParkingMarker from './assets/illegal-parking-marker.png'
+
+
+class IconComponent extends React.Component {
+    render() {
+        return <img width="30px" height="30px" src={illegalParkingMarker} alt="User Location"/>
+    }
+}
 
 class IllegalParkingReports extends React.Component  {
     state = {
         illegalParkingReports: []
     }
-    
+
     componentDidMount = () => {
-        fetchIllegalParking()
+        fetchIllegalParking(localStorage.getItem("Auth"), this.props)
         .then((reports) => this.setState({illegalParkingReports: reports}))
         .catch((err) => console.log(err));
     
@@ -29,7 +38,7 @@ class IllegalParkingReports extends React.Component  {
                     const lng = report.location.longitude;
     
                     return (
-                        <Marker key={idx} position={{lat, lng}}>
+                        <Marker key={idx} position={{lat, lng}} icon={<IconComponent/>}>
                             
                         </Marker>
                     )

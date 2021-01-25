@@ -3,6 +3,10 @@ import loginImg from "../../login.svg"
 import axios from 'axios';
 import { Redirect } from "react-router";
 
+import baseURL from "../../config/config";
+
+const loginURL = baseURL + "/login"
+
 export class Login extends React.Component {
 
     constructor(props) {
@@ -15,7 +19,7 @@ export class Login extends React.Component {
     state = {
         email: '',
         password: ''
-      }
+    }
     
     handleChange = event => {
         this.setState({ [event.target.name]: event.target.value });
@@ -29,7 +33,7 @@ export class Login extends React.Component {
             password: this.state.password
         };
 
-        axios.post('http://localhost:9090/login', user)
+        axios.post(loginURL, user)
         .then(res => {
             console.log(res.data.jwt);
             if (res.data.jwt) {
